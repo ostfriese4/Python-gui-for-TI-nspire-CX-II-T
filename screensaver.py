@@ -184,3 +184,5 @@ def ImportToKernel(k):
   lib["stop"]=stop
   k.lib["gui"]["starting"].connect(start)
   k.lib["gui"]["stopping"].connect(stop)
+  if k.lib["gui"]["running"]():
+      start()

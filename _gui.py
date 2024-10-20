@@ -227,6 +227,10 @@ def ImportToKernel(k):
     redraw()
   lib["stopping"]=k.lib["system"]["slot"](k)
   lib["starting"]=k.lib["system"]["slot"](k)
+  def isRunning():
+    if pc==None:
+      return False
+    return True
   def start():
     nonlocal pc
     sys.use_buffer()
@@ -250,6 +254,7 @@ def ImportToKernel(k):
   lib["get theme by name"]=getThemeByName
   lib["mouse"]=mouse
   lib["stop"]=stop
+  lib["running"]=isRunning
   lib["start"]=start
   lib["area"]=area
   lib["themes"]=themes
