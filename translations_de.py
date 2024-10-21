@@ -3,5 +3,7 @@ def ImportToKernel(k):
 
   data={
       "Yes":"Ja",
-      "No":"Nein"
+      "No":"Nein",
+      "Utilities":"Zubehör",
+      "Time":"Zeit"
       }
