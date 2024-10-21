@@ -3,6 +3,7 @@ def ImportToKernel(k):
   changed = k.get("kernel").slot(k)
 
   userLanguage = "en"
+  missing = []
 
   languages = {}
 
@@ -25,11 +26,15 @@ def ImportToKernel(k):
     for set in sets:
       if term in set:
         return set[term]
+    if term not in missing:
+      missing.append(term)
+      k.log("Missing translation for "+term)
     return term
 
   def setLanguage(name):
     nonlocal userLanguage
     userLanguage = name
+    missing.clear()
     changed.run()
 
   lib.translate = translate
