@@ -1,5 +1,6 @@
 def ImportToKernel(k):
   lib = k.get("kernel").lib()
+  changed = k.get("kernel").slot(k)
 
   userLanguage = "en"
 
@@ -29,11 +30,13 @@ def ImportToKernel(k):
   def setLanguage(name):
     nonlocal userLanguage
     userLanguage = name
+    changed.run()
 
   lib.translate = translate
   lib.setLanguage = setLanguage
   lib.getLanguage = getLanguage
   lib.language = language
+  lib.changed = changed
 
   return lib
 
