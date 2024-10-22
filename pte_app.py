@@ -3,10 +3,15 @@ def ImportToKernel(k):
   elements = []
 
   class element:
-    def __init__(self, short, name, position = (1,1)):
+    def __init__(self, short, name, position=(1, 1), melting_point=None, boiling_point=None, electronegativity=None, classification=None, weight=None, atomic_number=None):
       self.name = name
       self.short = short
       self.position = position
+      self.melting_point = melting_point
+      self.boiling_point = boiling_point
+      self.electronegativity = electronegativity
+      self.classification = classification
+      self.atomic_number = atomic_number
       elements.append(self)
 
   def app():
@@ -27,7 +32,17 @@ def ImportToKernel(k):
       showElement(info["element"])
   def showElement(element):
     w=k.get("gui").window(title = _(element.name))
-    text = ""
+    text = "Name: "+element.name+"\nSymbol: "+element.short+"\n"
+    if element.melting_point:
+      text += _("Melting point")+" :"+element.melting_point+" °C\n"
+    if element.boiling_point:
+      text += _("Boiling point")+" :"+element.boiling_point+" °C\n"
+    if element.electronegativity:
+      text += _("Electronegativity")+": "+element.electronegativity+"\n"
+    if element.classification:
+      text += _("classification")+": "+element.classification+"\n"
+    if element.atomic_number:
+      text += _("Atomic number")+": "+element.atomic_number+"\n"
     k.get("widgets").Label(w,text=text)
   def runner(term):
     return []
