@@ -21,8 +21,14 @@ def ImportToKernel(k):
       x = (x-1)*width
       y = (y-1)*height
       button = widgets.Button(window, text = element.short, x=x, y=y, width = width, height = height) # Create entry in the table
+      button.clicked.info["element"]=element
+      button.clicked.connect(show)
+  def show(info):
+      showElement(info["element"])
   def showElement(element):
-    pass
+    w=k.get("gui").window(title = _(element.name))
+    text = ""
+    k.get("widgets").Label(w,text=text)
   def runner(term):
     return []
 
