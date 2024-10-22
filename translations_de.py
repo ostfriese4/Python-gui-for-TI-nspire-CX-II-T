@@ -7,3 +7,5 @@ def ImportToKernel(k):
       "Utilities":"Zubehör",
       "Time":"Zeit"
       }
+
+  translations.getLanguage("de").sets.append(data)
