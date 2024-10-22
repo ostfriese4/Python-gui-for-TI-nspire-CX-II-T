@@ -5,7 +5,8 @@ def ImportToKernel(k):
       "Yes":"Ja",
       "No":"Nein",
       "Utilities":"Zubehör",
-      "Time":"Zeit"
+      "Time":"Zeit",
+      "Education":"Bildung"
       }
 
   translations.getLanguage("de").sets.append(data)
