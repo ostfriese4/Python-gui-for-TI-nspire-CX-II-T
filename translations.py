@@ -11,7 +11,7 @@ def ImportToKernel(k):
     def __init__(self, name="en"):
       self.name = name
       self.sets = []
-      languages[short] = self
+      languages[name] = self
 
   def getLanguage(name):
     if name in languages:
@@ -22,7 +22,7 @@ def ImportToKernel(k):
   def translate(term, language = None):
     if language is None:
       language = userLanguage
-    sets = getLanguage(language)
+    sets = getLanguage(language).sets
     for set in sets:
       if term in set:
         return set[term]
@@ -42,6 +42,8 @@ def ImportToKernel(k):
   lib.getLanguage = getLanguage
   lib.language = language
   lib.changed = changed
+
+  getLanguage("en")
 
   return lib
 

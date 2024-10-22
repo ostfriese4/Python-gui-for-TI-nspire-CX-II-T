@@ -11,15 +11,16 @@ def ImportToKernel(k):
 
   def app():
     widgets = k.get("widgets")
-    width = 18
-    height = 7
-    window = k.get("gui").window("title" = _("Periodic System"))
+    width = 1/18
+    height = 1/7
+    window = k.get("gui").window(title = _("Periodic System"))
+    window.maximize()
 
     for element in elements:
       x,y = element.position
-      x = x/width - 1
-      y = y/height - 1
-      button = widgets.Button(w, text = element.short, x=x, y=y, width = 1/width, height = 1/height) # Create entry in the table
+      x = (x-1)*width
+      y = (y-1)*height
+      button = widgets.Button(window, text = element.short, x=x, y=y, width = width, height = height) # Create entry in the table
   def showElement(element):
     pass
   def runner(term):
@@ -29,7 +30,7 @@ def ImportToKernel(k):
 
 
   search = k.get("system_search")
-  modul = search.modul() # Create search-modul
+  modul = search.modul("PSE") # Create search-modul
   modul.search = runner
 
 

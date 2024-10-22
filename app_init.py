@@ -6,6 +6,7 @@ def ImportToKernel(k):
   apps.append("test_apps")
   apps.append("settings_app")
   apps.append("graphs_app")
+  apps.append("pse_app")
   apps.append("ships_app")
   apps.append("clocks_app")
   apps.append("apple_theme")
