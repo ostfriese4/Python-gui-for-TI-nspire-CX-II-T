@@ -34,15 +34,15 @@ def ImportToKernel(k):
     w=k.get("gui").window(title = _(element.name))
     text = "Name: "+element.name+"\nSymbol: "+element.short+"\n"
     if element.melting_point:
-      text += _("Melting point")+" :"+element.melting_point+" °C\n"
+      text += _("Melting point")+" :"+str(element.melting_point)+" °C\n"
     if element.boiling_point:
-      text += _("Boiling point")+" :"+element.boiling_point+" °C\n"
+      text += _("Boiling point")+" :"+str(element.boiling_point)+" °C\n"
     if element.electronegativity:
-      text += _("Electronegativity")+": "+element.electronegativity+"\n"
+      text += _("Electronegativity")+": "+str(element.electronegativity)+"\n"
     if element.classification:
-      text += _("classification")+": "+element.classification+"\n"
+      text += _("classification")+": "+str(element.classification)+"\n"
     if element.atomic_number:
-      text += _("Atomic number")+": "+element.atomic_number+"\n"
+      text += _("Atomic number")+": "+str(element.atomic_number)+"\n"
     k.get("widgets").Label(w,text=text)
   def runner(term):
     return []
