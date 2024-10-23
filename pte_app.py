@@ -32,7 +32,7 @@ def ImportToKernel(k):
       showElement(info["element"])
   def showElement(element):
     w=k.get("gui").window(title = _(element.name))
-    text = "Name: "+element.name+"\nSymbol: "+element.short+"\n"
+    text = "Name: "+_(element.name)+"\nSymbol: "+element.short+"\n"
     if element.melting_point:
       text += _("Melting point")+": "+str(element.melting_point)+" °C\n"
     if element.boiling_point:
