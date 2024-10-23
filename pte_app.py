@@ -34,9 +34,9 @@ def ImportToKernel(k):
     w=k.get("gui").window(title = _(element.name))
     text = "Name: "+element.name+"\nSymbol: "+element.short+"\n"
     if element.melting_point:
-      text += _("Melting point")+" :"+str(element.melting_point)+" °C\n"
+      text += _("Melting point")+": "+str(element.melting_point)+" °C\n"
     if element.boiling_point:
-      text += _("Boiling point")+" :"+str(element.boiling_point)+" °C\n"
+      text += _("Boiling point")+": "+str(element.boiling_point)+" °C\n"
     if element.electronegativity:
       text += _("Electronegativity")+": "+str(element.electronegativity)+"\n"
     if element.classification:
