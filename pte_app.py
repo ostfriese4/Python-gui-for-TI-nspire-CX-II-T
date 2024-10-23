@@ -45,7 +45,13 @@ def ImportToKernel(k):
       text += _("Atomic number")+": "+str(element.atomic_number)+"\n"
     k.get("widgets").Label(w,text=text)
   def runner(term):
-    return []
+    items = []
+    term = term.lower()
+    for element in elements:
+      if term == element.short.lower():
+        short = element # For correct element in lambda
+        items.append(search.item(element.short + " - " + _(element.name), _("Periodic table"), lambda: showElement(short))) # Add reult to results
+    return ietms
 
   k.get("apps")(name = "Periodic table", categories = ["Education"], startcode = app) # Create App
 
