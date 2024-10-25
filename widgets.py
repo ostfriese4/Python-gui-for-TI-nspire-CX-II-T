@@ -39,10 +39,10 @@ def ImportToKernel(k):
           self._cropped_text=self._text
           self._cropped=crop(self._text,width)
       else:
-        self._cropped = self._crop.split("\n")
+        self._cropped = self._text.split("\n")
       for line in self._cropped:
         h+=20
-        if h>height:
+        if h>height and self._crop:
           return
         rwidth,rheight=sys.string_size(line)
         x2=width-rwidth
@@ -152,3 +152,4 @@ def ImportToKernel(k):
   output.NumberChoose=NumberChoose
 
   return output
+
