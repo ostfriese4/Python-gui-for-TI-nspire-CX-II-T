@@ -8,7 +8,7 @@ def ImportToKernel(k):
   class Label(widget):
     def __init__(self, window, x=0, y=0, width=1, height=1, text="text", color=None, text_align="left", crop=True):
       super().__init__(window,x,y,width,height)
-      sefl._crop = crop
+      self._crop = crop
       self._text=text
       self._cropped=None
       self._cropped_width=None
