@@ -6,8 +6,9 @@ def ImportToKernel(k):
   output=k.lib["system"]["lib"]()
 
   class Label(widget):
-    def __init__(self,window,x=0,y=0,width=1,height=1,text="text",color=None,text_align="left"):
+    def __init__(self, window, x=0, y=0, width=1, height=1, text="text", color=None, text_align="left", crop=True):
       super().__init__(window,x,y,width,height)
+      sefl._crop = crop
       self._text=text
       self._cropped=None
       self._cropped_width=None
@@ -32,10 +33,13 @@ def ImportToKernel(k):
         color=self._window.__theme.get("label button text color")
       sys.set_color(color)
       h=0
-      if width!=self._cropped_width or self._text!=self._cropped_text:
-        self._cropped_width=width
-        self._cropped_text=self._text
-        self._cropped=crop(self._text,width)
+      if self._crop:
+        if width!=self._cropped_width or self._text!=self._cropped_text:
+          self._cropped_width=width
+          self._cropped_text=self._text
+          self._cropped=crop(self._text,width)
+      else:
+        self._cropped = self._crop.split("\n")
       for line in self._cropped:
         h+=20
         if h>height:
@@ -54,8 +58,8 @@ def ImportToKernel(k):
   output.Label=Label
 
   class Button(Label):
-    def __init__(self,window,x=0,y=0,width=1,height=1,text="text",color=None,text_align="left",action=None,bg_color=None):
-      super().__init__(window,x,y,width,height,text,color,text_align)
+    def __init__(self,window,x=0,y=0,width=1,height=1,text="text",color=None,text_align="left",action=None,bg_color=None, crop=True):
+      super().__init__(window,x,y,width,height,text,color,text_align,crop)
       if action!=None:self.clicked.connect(action)
       self._bgcolor=bg_color
     def draw(self,x,y,width,height):
