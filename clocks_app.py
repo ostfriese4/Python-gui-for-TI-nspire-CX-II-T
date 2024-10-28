@@ -12,7 +12,7 @@ def ImportToKernel(k):
       day=[_("Monday"),_("Tuesday"),_("Wednesday"),_("Thursday"),_("Friday"),_("Saturday"),_("Sunday")][time[6]]
       text = _("{day} the {monthday}. {month} {year}")
       text=text.replace("{day}", day)
-      text=text.replace("{monthday}", str(time[2])
+      text=text.replace("{monthday}", str(time[2]))
       text=text.replace("{month}",month)
       text=text.replace("{year}", str(time[0]))
       return [search.item(text,_("Date"),clock)]
@@ -33,8 +33,8 @@ def ImportToKernel(k):
       year,month,day,hour,minute,second,weekday,yearday,summertime=time.localtime()
       text=_("Date") + ": " +  _("{day} the {monthday}.{month}.{year}") + _("Time") + ": {h}{m}{s}"
       text=text.replace("{day}", days[weekday])
-      text=text.replace("{monthday}", str(day)
-      text=text.replace("{month}",month)
+      text=text.replace("{monthday}", str(day))
+      text=text.replace("{month}", month)
       text=text.replace("{year}", str(year))
       text=text.replace("{h}", str(hour))
       text=text.replace("{m}", str(minute))
@@ -81,3 +81,4 @@ def ImportToKernel(k):
   app(name="Timer",categories=["Utilities/Time"],startcode=timer)
   app(name="Stopwatch",categories=["Utilities/Time"],startcode=stopwatch)
   app(name="Clock",categories=["Utilities/Time"],startcode=clock)
+
