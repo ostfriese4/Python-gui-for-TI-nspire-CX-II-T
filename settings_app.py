@@ -1,8 +1,9 @@
 def ImportToKernel(k):
+  _ = k.get("translations").translate
   def app():
     gui=k.get("gui")
     widgets=k.get("widgets")
-    window=gui.window(title="Einstellungen")
+    window=gui.window(title=_("Settings"))
     settings=k.get("settings")()
 
 
@@ -17,7 +18,7 @@ def ImportToKernel(k):
     def set_screensaver():
       settings.set("Screensaver_timeout",int(screensaverInput.get_text()),True)
 
-    screensaverLabel=widgets.Label(window,height=0.45,width=0.5,text="Bildschirmshonerzeit:")
+    screensaverLabel=widgets.Label(window,height=0.45,width=0.5,text="Screensaver time:")
     screensaverInput=widgets.TextEdit(window,x=0.55,height=0.45,width=0.45,text=str(settings.get("Screensaver_timeout")))
     screensaverInput.updated.connect(set_screensaver)
     themes=[]
@@ -31,4 +32,4 @@ def ImportToKernel(k):
     k.lib["gui"]["theme changed"].connect(update_theme)
     theme.text_updated.connect(set_theme)
 
-  k.get("apps")(name="Einstellungen",categories=["System","Zubehör"],startcode=app)
+  k.get("apps")(name="Settings",categories=["System","Utilities"],startcode=app)

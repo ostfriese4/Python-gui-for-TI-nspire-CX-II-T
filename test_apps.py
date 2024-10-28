@@ -4,9 +4,9 @@ def ImportToKernel(k):
   lib=k.lib["gui"]
   def noteTest():
     w=lib["window"](title="Notes")
-    txt="Hallo"
+    txt="Hello"
     e=lib["TextEdit"](w,text=txt)
-  k.lib["app"](name="Notes",startcode=noteTest,categories=["Tests","Zubehör"])
+  k.lib["app"](name="Notes",startcode=noteTest,categories=["Tests","Utilities"])
   def testcenter():
     w=lib["window"](title="Testcenter")
     l=lib["Label"](w,width=0.5,height=0.7,text="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")

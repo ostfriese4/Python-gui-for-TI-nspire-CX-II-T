@@ -4,8 +4,10 @@ def ImportToKernel(k):
   runner=search.modul("Time")
   def runner_search(term):
     dateTerm = _("week") + _("day") + _("date") + _("weekday") #This are the keywords for showing a result
+    timeTerm = _("hour") + _("minute") + _("second") + _("time") #This are the keywords for showing a result
     term=term.lower()
     dateTerm = dateTerm.lower()
+    timeTerm = timeTerm.lower()
     if term in dateTerm:
       time=k.get("time").localtime()
       month=[_("January"),_("February"),_("March"),_("April"),_("May"),_("June"),_("July"),_("August"),_("September"),_("October"),_("November"),_("December")][time[1]-1]
@@ -16,7 +18,7 @@ def ImportToKernel(k):
       text=text.replace("{month}",month)
       text=text.replace("{year}", str(time[0]))
       return [search.item(text,_("Date"),clock)]
-    if term in "zeitimeclockuhr":
+    if term in timeTerm:
       time=k.get("time").localtime()
       text=_("The time is {h}:{m}")
       text=text.replace("{h}",str(time[3]))

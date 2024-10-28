@@ -3,7 +3,7 @@ def ImportToKernel(k):
 
   namespace={}
 
-  def berechne(term):
+  def calculate(term):
     code="result="+term
     code=code.replace("^","**")
     code=code.replace("-","-")
@@ -16,15 +16,15 @@ def ImportToKernel(k):
       return e
     return namespace["result"]
 
-  calc=backend.modul("Rechner")
+  calc=backend.modul("Calculator")
   def calc_search(term):
     for i in term:
       if i not in "0123456789.-+-*/()^= π":
         return []
-    result=berechne(term)
+    result=calculate(term)
     if not (type(result)==int or type(result)==float):
       return []
-    return [backend.item(str(result),"Rechner",lambda:start(term))]
+    return [backend.item(str(result),"Calculator",lambda:start(term))]
   calc.search=calc_search
 
   def start(starttext=""):
@@ -35,9 +35,9 @@ def ImportToKernel(k):
     result=gui["Label"](window,y=0.65,height=0.35,text="")
     def work(info=None):
       exercise=entry.get_text()
-      result.set_text(str(berechne(exercise)))
+      result.set_text(str(calculate(exercise)))
     entry.updated.connect(work)
     entry.click()
     work()
   k.get("input").key("scratchpad").pressed.connect(start)
-  app=k.get("apps")(name="calculator",categories=["Zubehör"],startcode=start)
+  app=k.get("apps")(name="calculator",categories=["Utilities"],startcode=start)

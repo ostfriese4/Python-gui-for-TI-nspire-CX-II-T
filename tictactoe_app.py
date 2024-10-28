@@ -8,13 +8,13 @@ def ImportToKernel(k):
     sign="[X]"
     count=0
     looser=base.user1
-    gui["notification"]("TicTacToe",base.user1.name+" beginnt")
+    gui["notification"]("TicTacToe",base.user1.name+" starts")
     def reset():
       nonlocal count
       nonlocal sign
       sign="[X]"
       count=0
-      gui["notification"]("TicTacToe",looser.name+" beginnt")
+      gui["notification"]("TicTacToe",looser.name+" starts")
       for row in range(3):
         for column in range(3):
           space[row][column].set_text("[  ]")
@@ -38,9 +38,9 @@ def ImportToKernel(k):
           looser=base.user2
         else:
           looser=base.user1
-        gui["notification"]("TicTacToe",user.name+" hat gewonnen").timeout.connect(reset)
+        gui["notification"]("TicTacToe",user.name+" won").timeout.connect(reset)
       elif count==9:
-        gui["notification"]("TicTacToe","Gleichstand").timeout.connect(reset)
+        gui["notification"]("TicTacToe","Tie").timeout.connect(reset)
     def analyze():
       for row in range(3):
         if get(0,row)==get(1,row)==get(2,row) and get(0,row)!="[  ]":
@@ -79,4 +79,4 @@ def ImportToKernel(k):
         space.append([])
   def init():
     k.get("game_platform").init(start)
-  k.get("apps")(name="TicTacToe",categories=["Spiele"],startcode=init)
+  k.get("apps")(name="TicTacToe",categories=["Games"],startcode=init)
