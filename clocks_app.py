@@ -1,6 +1,6 @@
 def ImportToKernel(k):
   search=k.get("system_search")
-  _ = k.get("translations.py").translate
+  _ = k.get("translations").translate
   runner=search.modul("Time")
   def runner_search(term):
     dateTerm = _("week") + _("day") + _("date") + _("weekday") #This are the keywords for showing a result
@@ -19,9 +19,9 @@ def ImportToKernel(k):
     if term in "zeitimeclockuhr":
       time=k.get("time").localtime()
       text=_("The time is {h}:{m}")
-      text=text.replace("{h}",time[3])
-      text=text.replace("{m}",time[4])
-      text=text.replace("{s}",time[5])
+      text=text.replace("{h}",str(time[3]))
+      text=text.replace("{m}",str(time[4]))
+      text=text.replace("{s}",str(time[5]))
       return [search.item(text,_("Time"),clock)]
     return []
   runner.search=runner_search

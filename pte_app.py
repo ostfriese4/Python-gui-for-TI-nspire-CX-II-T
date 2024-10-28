@@ -51,7 +51,7 @@ def ImportToKernel(k):
       if term == element.short.lower():
         short = element # For correct element in lambda
         items.append(search.item(element.short + " - " + _(element.name), _("Periodic table"), lambda: showElement(short))) # Add reult to results
-    return ietms
+    return items
 
   k.get("apps")(name = "Periodic table", categories = ["Education"], startcode = app) # Create App
 
