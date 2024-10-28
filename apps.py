@@ -13,6 +13,7 @@ def ImportToKernel(k):
       self._keywords=keywords
       self._init=initcode
       self._categories=categories
+      self.rename()
       k.get("translations").changed.connect(self.rename)
     def rename(self):
       categories = self._categories
@@ -26,7 +27,7 @@ def ImportToKernel(k):
           if not _(sub) in parent:
             parent[_(sub)]={}
           parent=parent[_(sub)]
-        parent[_(name)]=self.run
+        parent[_(self._name)]=self.run
       self.init()
     def init(self):
       k.run_code(self._init)
