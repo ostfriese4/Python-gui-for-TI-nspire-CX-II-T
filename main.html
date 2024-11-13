@@ -1,0 +1,56 @@
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
+</head>
+<body onload="brython()">
+    <script type="text/python">
+        from kernel import *
+
+        k = kernel()
+
+        def code():
+            print("Prozess")
+            k.stop()
+
+        process(k, name="Test", code=code)
+
+        import importlib.util
+        import sys
+
+        def load_module_from_path(module_name, file_path):
+            # Erstelle eine Spezifikation für das Modul
+            spec = importlib.util.spec_from_file_location(module_name, file_path)
+            # Erzeuge ein neues Modul basierend auf der Spezifikation
+            module = importlib.util.module_from_spec(spec)
+            # Füge das Modul zu sys.modules hinzu
+            sys.modules[module_name] = module
+            # Lade das Modul
+            spec.loader.exec_module(module)
+            return module
+
+        # Beispiel
+        module = load_module_from_path("emulator-web", "/web/emulator.py")
+        module.setup(k)  # Aufruf einer Funktion aus dem geladenen Modul
+
+
+
+        def log(delete=False):
+            k.print_log(delete)
+        try:
+            k.get("ti_system").clear_history()
+            #  k.print=True;log(True)
+            k.get("input").key("esc").pressed.connect(k.stop)
+            #  k.get("files")
+            #  k.get("shell")
+            k.get("app_init")
+            k.get("gui").start()
+            k.start()
+        except Exception as err:
+            k.errors+=1
+            k.log("<ERROR>")
+            k.log(err)
+        if k.errors>0:
+            print(str(k.errors)+" Error(s) occured. Type log() for more information")
+    </script>
+</body>
+</html>

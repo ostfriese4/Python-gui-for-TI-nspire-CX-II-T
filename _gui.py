@@ -4,9 +4,9 @@ def ImportToKernel(k):
   k.get("input")
   empty=k.lib["system"]["empty"]
   movepc=[]
-  host = None
 
-
+  updated=[]
+  areas=[]
 
   class mouse:
     def __init__(self):
@@ -22,27 +22,18 @@ def ImportToKernel(k):
   mouse=mouse()
 
   class area:
-    def __init__(self, x, y, width, height, click=empty, draw=empty, clickable=True, backgroundVisible=False, parent=None):
-      nonlocal host
+    def __init__(self,x,y,width,height,click=empty,draw=empty,clickable=True,backgroundVisible=False):
       self.__x=x
       self.__y=y
       self.__width=width
       self.__height=height
       self.__clickable=clickable
       self.__keys={}
-      if host == None:
-        host = self
-      else:
-        parent = host
-        parent.addChild(self)
-      self._parent = parent
-      self._updatedChilds = []
       self.enabled=k.lib["system"]["slot"](k)
       self.disabled=k.lib["system"]["slot"](k)
       self.enabled.connect(self._enableKeys)
       self.disabled.connect(self._disableKeys)
       self.mouseMoved=k.lib["system"]["slot"](k)
-      self._childs = []
       self.__backgroundVisible=backgroundVisible
       self.setClick(click)
       self.setDraw(draw)
@@ -66,16 +57,13 @@ def ImportToKernel(k):
       for key in keys:
         k.lib["input"]["key"](key).pressed.disconnect(self.__keys[key].run)
     def update(self,changed=True):
-      if not self in self._parent._updatedChilds:
-        self._parent._updatedChilds.append(self)
-        if self._parent is not None:
-          self._parent.update()
+      if not self in updated:
+        updated.append(self)
         if changed:
           self.update_foreground()
           if self.__backgroundVisible:
             self.update_background()
     def show(self):
-      areas = self._parent._childs
       try:
         areas[len(areas)-1].disabled.run()
       except IndexError: #no element in background
@@ -85,7 +73,6 @@ def ImportToKernel(k):
         self.update()
       self.enabled.run()
     def isEnabled(self):
-      areas = self._parent._childs
       if self in areas:
         return areas[len(areas)-1]==self
       return False
@@ -94,7 +81,6 @@ def ImportToKernel(k):
     def get_position(self):
       return self.__x,self.__y
     def hide(self):
-      areas = self._parent._childs
       if self in areas:
         areas.remove(self)
         self.disabled.run()
@@ -119,73 +105,39 @@ def ImportToKernel(k):
       self.__width=width
       self.__height=height
     def update_all(self):
-      areas = self._parent._childs
       for area in areas:
         area.update(False)
     def update_background(self):
-      areas = self._parent._childs
       if self in areas:
         index=areas.index(self)
         background=areas[:index]
         for area in background:
           area.update(False)
     def update_foreground(self):
-      areas = self._parent._childs
       if self in areas:
         index=areas.index(self)
         foreground=areas[index:]
         for area in foreground:
           area.update(False)
     def enable(self):
-      areas = self._parent._childs
       if self in areas:
         areas.remove(self)
       self.show()
     def setClick(self,action):
       self._click=action
-    def click(self, xm, ym):
-      x, y = self.get_position()
-      xm -= x
-      ym -= y
-
-      k.run_code(lambda:self._click(x,y))
-      self.clicked.run()
+    def click(self,x,y):
+      if x>=self.__x and y>=self.__y and x<=self.__x+self.__width and y<=self.__y+self.__height:
+        k.run_code(lambda:self._click(x,y))
+        self.clicked.run()
+        return True
       self.not_clicked.run()
-
-
-      areas = self._childs
-      mode="test"
-      for i in range(len(areas)):
-        area=areas[len(areas)-1-i]
-        if mode=="test":
-          x, y = area.get_position()
-          width, height = area.get_size()
-
-          if x >= xm and y >= ym and area.__clickable:
-            if width < 0:
-              width = rwidth + 1 - width
-            if height < 0:
-              height = rheight + 1 - height
-            if width <= xm + rwidth and height <= ym + rheight:
-              area.click(xm, ym)
-              mode = "set"
-        elif mode=="set":
-          area.not_clicked.run()
+      return False
     def setDraw(self,action):
-      self._draw=action
-    def draw(self):
-      for area in self._updatedChilds:
-        k.run_code(area.draw)
+      self.draw=action
     def delete(self):
-      updated = self._parent._updatedChilds
       self.hide()
       if self in updated:
         updated.remove(self)
-  host = area(0, 0, 318, 212)
-
-
-
-
   themes=[]
   change_actions=[]
   provided={}
@@ -230,8 +182,10 @@ def ImportToKernel(k):
 
   def server():
     nonlocal updated
-    if updated:
-      k.run_code(host.draw)
+    if updated!=[]:
+      for area in areas:
+        if area in updated:
+          k.run_code(area.draw)
       updated=[]
       sys.paint_buffer()
     if mouse.position!=sys.get_mouse():
@@ -247,7 +201,14 @@ def ImportToKernel(k):
       click_finished.run()
       return
     xm,ym=mouse.position
-    host.click(xm, ym)
+    mode="test"
+    for i in range(len(areas)):
+      area=areas[len(areas)-1-i]
+      if mode=="set":
+        area.not_clicked.run()
+      elif mode=="test" and area.__clickable:
+        if area.click(xm,ym):
+          mode="set"
     click_finished.run()
 
   def create_movepc(code):
@@ -288,20 +249,19 @@ def ImportToKernel(k):
     lib["stopping"].run()
     k.starting.disconnect(restart)
 
-  k.lib["gui"] = lib
+  k.lib["gui"]=lib
 
-  lib["get theme by name"] = getThemeByName
-  lib["mouse"] = mouse
-  lib["stop"] = stop
-  lib["running"] = isRunning
-  lib["start"] = start
-  lib["area"] = area
-  lib["themes"] = themes
-  lib["theme"] = theme
-  lib["enabled theme"] = enabled_theme
-  lib["move process"] = create_movepc
-  lib["theme changed"] = k.lib["system"]["slot"](k)
-  lib["click finished"] = click_finished
-  lib["update all"] = updateAll
+  lib["get theme by name"]=getThemeByName
+  lib["mouse"]=mouse
+  lib["stop"]=stop
+  lib["running"]=isRunning
+  lib["start"]=start
+  lib["area"]=area
+  lib["themes"]=themes
+  lib["theme"]=theme
+  lib["enabled theme"]=enabled_theme
+  lib["move process"]=create_movepc
+  lib["theme changed"]=k.lib["system"]["slot"](k)
+  lib["click finished"]=click_finished
 
   k.get("default_theme")
